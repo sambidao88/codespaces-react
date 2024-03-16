@@ -1,40 +1,57 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <h1>Convert Currency</h1>
-      </header>
-      <div className='Main'>
-        <main>
-          <h2>🇻🇳 VND</h2>
+        <div className='Main'>
+          <h2>🇻🇳</h2>
           <Converter />
-        </main>
       </div>
+      </header>
     </div>
   );
 }
 
 export default App;
 
-function Converter () {
-  [base, setBase] = useState("USD")
-  [target, setTarget] = useState("EUR")
-  [amount, setAmount] = useState(1)
+function Converter() {
+  const [base, setBase] = useState("USD");
+  const [amount, setAmount] = useState(1);
+  const [data, setData] = useState()
 
+  const handleBaseChange = (event) => {
+    setBase(event.target.value);
+  };
+
+  const handleTargetChange = (event) => {
+    setTarget(event.target.value);
+  };
+
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+  };
+
+  useEffect( 
+    async function fectchCurrency () {
+      const res = await fectch('https://api.frankfurter.app/latest?base=MYR');
+      const data = await res.json()
+      setData(data)
+    }
+    ,[])
 
   return (
     <>
-      <input type='text' placeholder={amount} />
-      <select className='select-base'>
+      <input type='text' value={amount} onChange={handleAmountChange} placeholder={amount} />
+      <select className='select-base' value={base} onChange={handleBaseChange}>
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
         <option value="MYR">MYR</option>
       </select>
       <h3>Output</h3>
     </>
-  )
-
+  );
 }
