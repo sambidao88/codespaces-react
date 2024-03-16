@@ -8,7 +8,6 @@ function App() {
       <header className="App-header">
         <h1>Convert Currency</h1>
         <div className='Main'>
-          <h2>🇻🇳</h2>
           <Converter />
       </div>
       </header>
@@ -35,23 +34,34 @@ function Converter() {
     setAmount(event.target.value);
   };
 
-  useEffect( 
-    async function fectchCurrency () {
-      const res = await fectch('https://api.frankfurter.app/latest?base=MYR');
-      const data = await res.json()
-      setData(data)
+  useEffect(() => {
+    async function fetchCurrency() {
+      try {
+        const res = await fetch('https://api.frankfurter.app/latest?base=MYR');
+        if (!res.ok) throw new Error("Cannot fetch URL: https://api.frankfurter.app/latest?base=MYR");
+        const data = await res.json();
+        setData(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    ,[])
+    fetchCurrency(); // Call fetchCurrency function
+  }, []); // Empty dependency array means this effect runs only once after the initial render
 
   return (
     <>
+      {data && (
+        <h2>{data.date}</h2>
+      )}
       <input type='text' value={amount} onChange={handleAmountChange} placeholder={amount} />
       <select className='select-base' value={base} onChange={handleBaseChange}>
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="MYR">MYR</option>
+        {data && Object.keys(data.rates).map((currency) => (
+          <option key={currency} value={currency}>{currency}</option>
+        ))}
       </select>
-      <h3>Output</h3>
+      {data && (
+        <h3>RM {amount * data.rates[base]}</h3>
+      )}
     </>
   );
 }
