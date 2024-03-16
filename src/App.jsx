@@ -1,29 +1,40 @@
+import { useState } from 'react';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="Octocat.png" className="App-logo" alt="logo" />
-        <p>
-          GitHub Codespaces <span className="heart">♥️</span> React
-        </p>
-        <p className="small">
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
+        <h1>Convert Currency</h1>
       </header>
+      <div className='Main'>
+        <main>
+          <h2>🇻🇳 VND</h2>
+          <Converter />
+        </main>
+      </div>
     </div>
   );
 }
 
 export default App;
+
+function Converter () {
+  [base, setBase] = useState("USD")
+  [target, setTarget] = useState("EUR")
+  [amount, setAmount] = useState(1)
+
+
+  return (
+    <>
+      <input type='text' placeholder={amount} />
+      <select className='select-base'>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="MYR">MYR</option>
+      </select>
+      <h3>Output</h3>
+    </>
+  )
+
+}
