@@ -26,10 +26,6 @@ function Converter() {
     setBase(event.target.value);
   };
 
-  const handleTargetChange = (event) => {
-    setTarget(event.target.value);
-  };
-
   const handleAmountChange = (event) => {
     setAmount(event.target.value);
   };
